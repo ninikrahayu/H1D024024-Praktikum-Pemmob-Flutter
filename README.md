@@ -3,8 +3,8 @@
 
 ### Identitas
 
-**Nama:** Ninik Rahayu 
-**NIM:** H1D024024 
+**Nama:** Ninik Rahayu  
+**NIM:** H1D024024  
 **Shift Awal:** H  
 **Shift Akhir:** F  
 
