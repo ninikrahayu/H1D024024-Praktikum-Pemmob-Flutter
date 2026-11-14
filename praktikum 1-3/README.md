@@ -25,3 +25,25 @@ Pada main(), program memasukkan 10, 20, dan 30, lalu mengeluarkan 10. Setelah 40
 ### Screenshoot
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/6659c875-510a-4e8d-bda2-d24a682e037c" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/5731c7d8-110d-4653-9c38-b5242622077c" />
+
+## Pertemuan 3
+### Screenshoot
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/b481a4ad-4bed-48cb-8624-605f8978eb21" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/c042cbe0-3ab8-471e-897a-20be4c14f6b4" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/06858a54-5df5-49da-975e-1d1256d371d3" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/7a86dc16-9553-45ef-903d-5897c2d86dfa" />
+
+
+## Pertemuan 4
+### Screenshoot
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/085b89ee-d493-4afa-b865-25df4a9494f8" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/1e71cace-67dd-401c-bfbb-b8e181d8184e" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/099bbe6a-8663-4f48-9926-8e8d68a7fd97" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/736d4ade-9fc8-4f44-96c2-4d9e2f184e64" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/3e77adb9-f489-4d70-a1db-1ac2b2712d5a" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/9c5d2594-d36e-465d-b63f-642489f88516" />
+
+
+
+
+
