@@ -1,47 +1,38 @@
-
 import 'package:flutter/material.dart';
+import 'package:tokokita/bloc/produk_bloc.dart';
 import 'package:tokokita/model/produk.dart';
-import 'package:tokokita/services/api_service.dart';
 import 'package:tokokita/ui/produk_form.dart';
 
 class ProdukDetail extends StatefulWidget {
-  final Produk produk;
+  Produk? produk;
 
-  const ProdukDetail({
-    super.key,
-    required this.produk,
-  });
+  ProdukDetail({Key? key, this.produk}) : super(key: key);
 
   @override
-  State<ProdukDetail> createState() => _ProdukDetailState();
+  _ProdukDetailState createState() => _ProdukDetailState();
 }
 
 class _ProdukDetailState extends State<ProdukDetail> {
+  bool _isDeleting = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Detail Produk'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-      ),
-      body: Align(
-        alignment: Alignment.topCenter,
+      appBar: AppBar(title: const Text('Detail Produk')),
+      body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Kode : ${widget.produk.kodeProduk}",
-              style: const TextStyle(fontSize: 20),
+              "Kode : ${widget.produk!.kodeProduk}",
+              style: const TextStyle(fontSize: 20.0),
             ),
             Text(
-              "Nama : ${widget.produk.namaProduk}",
-              style: const TextStyle(fontSize: 18),
+              "Nama : ${widget.produk!.namaProduk}",
+              style: const TextStyle(fontSize: 18.0),
             ),
             Text(
-              "Harga : Rp. ${widget.produk.hargaProduk}",
-              style: const TextStyle(fontSize: 18),
+              "Harga : Rp. ${widget.produk!.hargaProduk.toString()}",
+              style: const TextStyle(fontSize: 18.0),
             ),
             _tombolHapusEdit(),
           ],
@@ -50,99 +41,79 @@ class _ProdukDetailState extends State<ProdukDetail> {
     );
   }
 
-  // Tombol Edit dan Delete
   Widget _tombolHapusEdit() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         // Tombol Edit
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.black87,
-            minimumSize: const Size(98, 36),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(2)),
-            ),
-          ),
-          onPressed: () async {
-            final berhasil = await Navigator.push<bool>(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProdukForm(
-                  produk: widget.produk,
-                ),
-              ),
-            );
-
-            // Setelah diubah, kembali ke daftar agar data dimuat ulang.
-            if (berhasil == true && mounted) {
-              Navigator.pop(context, true);
-            }
-          },
+        FilledButton(
+          style: FilledButton.styleFrom(backgroundColor: Colors.green.shade800),
           child: const Text("EDIT"),
+          onPressed: _isDeleting
+              ? null
+              : () async {
+                  final updated = await Navigator.push<bool>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProdukForm(produk: widget.produk!),
+                    ),
+                  );
+                  if (mounted && updated == true) {
+                    Navigator.pop(context, true);
+                  }
+                },
         ),
+        const SizedBox(width: 8),
 
-        // Tombol Delete
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.black87,
-            minimumSize: const Size(98, 36),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(2)),
-            ),
-          ),
-          onPressed: confirmHapus,
+        // Tombol Hapus
+        FilledButton(
+          style: FilledButton.styleFrom(backgroundColor: Colors.red.shade800),
           child: const Text("DELETE"),
+          onPressed: _isDeleting ? null : confirmHapus,
         ),
       ],
     );
   }
 
-  // Dialog Konfirmasi Hapus
-  void confirmHapus() {
-    showDialog(
+  Future<void> confirmHapus() async {
+    final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: const Text(
-            "Yakin ingin menghapus data ini?",
+      builder: (dialogContext) => AlertDialog(
+        title: const Text("Hapus produk?"),
+        content: Text('Produk "${widget.produk!.namaProduk}" akan dihapus.'),
+        actions: [
+          OutlinedButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text("Batal"),
           ),
-          actions: [
-            // Tombol Ya
-            OutlinedButton(
-              onPressed: () async {
-                final messenger = ScaffoldMessenger.of(this.context);
-                final navigator = Navigator.of(this.context);
-                Navigator.pop(context);
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: Colors.red.shade800),
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text("Hapus"),
+          ),
+        ],
+      ),
+    );
+    if (!mounted || confirmed != true) return;
 
-                try {
-                  await ApiService.hapusProduk(widget.produk.id!);
-                  navigator.pop(true);
-                } catch (e) {
-                  messenger.showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        e.toString().replaceFirst('Exception: ', ''),
-                      ),
-                    ),
-                  );
-                }
-              },
-              child: const Text("Ya"),
-            ),
-
-            // Tombol Batal
-            OutlinedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Batal"),
-            ),
-          ],
+    setState(() => _isDeleting = true);
+    try {
+      final deleted = await ProdukBloc.deleteProduk(id: widget.produk!.id);
+      if (!mounted) return;
+      if (deleted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Produk berhasil dihapus.")),
         );
-      },
+        Navigator.pop(context, true);
+        return;
+      }
+    } catch (error) {
+      debugPrint('Gagal menghapus produk: $error');
+    }
+    if (!mounted) return;
+    setState(() => _isDeleting = false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Produk gagal dihapus. Coba lagi.")),
     );
   }
 }
