@@ -44,6 +44,13 @@ Pada main(), program memasukkan 10, 20, dan 30, lalu mengeluarkan 10. Setelah 40
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/9c5d2594-d36e-465d-b63f-642489f88516" />
 
 
+## Pertemuan 5
+### Screenshoot
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/8b108eb4-3632-4aff-8368-7aaa75e21c9c" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/67ca2f63-9655-463f-8b50-a8fada1ccd1c" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/59c8f292-e3bd-4e43-ba83-ea64e9a88625" />
+
+
 
 
 
